@@ -1,0 +1,9 @@
+/usr/local/lib/cmake/gnuradio-serializer/gnuradio-serializerConfig.cmake
+/usr/local/include/gnuradio/serializer/api.h
+/usr/local/lib/python3.10/dist-packages/gnuradio/serializer/__init__.py
+/usr/local/lib/python3.10/dist-packages/gnuradio/serializer/serializer.py
+/usr/local/lib/python3.10/dist-packages/gnuradio/serializer/__init__.pyc
+/usr/local/lib/python3.10/dist-packages/gnuradio/serializer/serializer.pyc
+/usr/local/lib/python3.10/dist-packages/gnuradio/serializer/__init__.pyo
+/usr/local/lib/python3.10/dist-packages/gnuradio/serializer/serializer.pyo
+/usr/local/share/gnuradio/grc/blocks/serializer_serializer.block.yml
