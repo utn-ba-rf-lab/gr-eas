@@ -1,6 +1,0 @@
-# Hashes of file build rules.
-4a71413d02b39751b06290ed41a7b37a CMakeFiles/uninstall
-abf5e7a074fd4b22261d9cb165f4255e python/serializer/CMakeFiles/copy_module_for_tests
-aaf0397a895549d35317b5f5af523c5d python/serializer/CMakeFiles/pygen_python_serializer_90701
-42249b18b7f7c923cc230dda375cae94 python/serializer/__init__.pyc
-547e566ae82d98764a49ecdaf0fa0040 python/serializer/__init__.pyo
