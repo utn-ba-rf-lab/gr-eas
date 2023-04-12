@@ -24,6 +24,7 @@ from PyQt5 import Qt
 from gnuradio import qtgui
 import sip
 from gnuradio import analog
+from gnuradio import blocks
 from gnuradio import gr
 from gnuradio.filter import firdes
 from gnuradio.fft import window
@@ -43,7 +44,7 @@ from gnuradio import qtgui
 class test_serial(gr.top_block, Qt.QWidget):
 
     def __init__(self):
-        gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
+        gr.top_block.__init__(self, "Not titled yet", catch_exceptions=False)
         Qt.QWidget.__init__(self)
         self.setWindowTitle("Not titled yet")
         qtgui.util.check_set_qss()
@@ -85,15 +86,15 @@ class test_serial(gr.top_block, Qt.QWidget):
         self._valor_range = Range(-1, 1, 0.1, 0, 200)
         self._valor_win = RangeWidget(self._valor_range, self.set_valor, "Valor", "slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._valor_win)
-        self.serializer_serializer_0 = serializer.serializer('/dev/ttyUSB1','detector')
+        self.serializer_serializer_0 = serializer.serializer('/dev/ttyUSB1',False,'detector')
         self.qtgui_number_sink_0 = qtgui.number_sink(
             gr.sizeof_float,
-            0,
+            1,
             qtgui.NUM_GRAPH_NONE,
             1,
             None # parent
         )
-        self.qtgui_number_sink_0.set_update_time(0.10)
+        self.qtgui_number_sink_0.set_update_time(0.1)
         self.qtgui_number_sink_0.set_title("")
 
         labels = ['', '', '', '', '',
@@ -119,14 +120,16 @@ class test_serial(gr.top_block, Qt.QWidget):
         self.qtgui_number_sink_0.enable_autoscale(False)
         self._qtgui_number_sink_0_win = sip.wrapinstance(self.qtgui_number_sink_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_number_sink_0_win)
-        self.analog_const_source_x_0 = analog.sig_source_f(0, analog.GR_CONST_WAVE, 0, 0, valor)
+        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_float*1, samp_rate,True)
+        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_CONST_WAVE, 1000, valor, 0, 0)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_const_source_x_0, 0), (self.qtgui_number_sink_0, 0))
-        self.connect((self.analog_const_source_x_0, 0), (self.serializer_serializer_0, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_throttle_0, 0))
+        self.connect((self.blocks_throttle_0, 0), (self.qtgui_number_sink_0, 0))
+        self.connect((self.blocks_throttle_0, 0), (self.serializer_serializer_0, 0))
 
 
     def closeEvent(self, event):
@@ -142,18 +145,22 @@ class test_serial(gr.top_block, Qt.QWidget):
 
     def set_valor(self, valor):
         self.valor = valor
-        self.analog_const_source_x_0.set_offset(self.valor)
+        self.analog_sig_source_x_0.set_amplitude(self.valor)
 
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
+        self.blocks_throttle_0.set_sample_rate(self.samp_rate)
 
 
 
 
 def main(top_block_cls=test_serial, options=None):
+    if gr.enable_realtime_scheduling() != gr.RT_OK:
+        print("Error: failed to enable real-time scheduling.")
 
     if StrictVersion("4.5.0") <= StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
         style = gr.prefs().get_string('qtgui', 'style', 'raster')
