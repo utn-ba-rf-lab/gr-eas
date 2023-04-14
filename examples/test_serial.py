@@ -23,7 +23,6 @@ if __name__ == '__main__':
 from PyQt5 import Qt
 from gnuradio import qtgui
 import sip
-from gnuradio import analog
 from gnuradio import blocks
 from gnuradio import gr
 from gnuradio.filter import firdes
@@ -86,7 +85,7 @@ class test_serial(gr.top_block, Qt.QWidget):
         self._valor_range = Range(-1, 1, 0.1, 0, 200)
         self._valor_win = RangeWidget(self._valor_range, self.set_valor, "Valor", "slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._valor_win)
-        self.serializer_serializer_0 = serializer.serializer('/dev/ttyUSB1',False,'detector')
+        self.serializer_serializer_0 = serializer.serializer('/dev/ttyUSB1',True,'detector')
         self.qtgui_number_sink_0 = qtgui.number_sink(
             gr.sizeof_float,
             1,
@@ -120,16 +119,16 @@ class test_serial(gr.top_block, Qt.QWidget):
         self.qtgui_number_sink_0.enable_autoscale(False)
         self._qtgui_number_sink_0_win = sip.wrapinstance(self.qtgui_number_sink_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_number_sink_0_win)
+        self.blocks_vector_source_x_0 = blocks.vector_source_f((1, -1, 1, -1), False, 1, [])
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_float*1, samp_rate,True)
-        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_CONST_WAVE, 1000, valor, 0, 0)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_throttle_0, 0))
         self.connect((self.blocks_throttle_0, 0), (self.qtgui_number_sink_0, 0))
         self.connect((self.blocks_throttle_0, 0), (self.serializer_serializer_0, 0))
+        self.connect((self.blocks_vector_source_x_0, 0), (self.blocks_throttle_0, 0))
 
 
     def closeEvent(self, event):
@@ -145,14 +144,12 @@ class test_serial(gr.top_block, Qt.QWidget):
 
     def set_valor(self, valor):
         self.valor = valor
-        self.analog_sig_source_x_0.set_amplitude(self.valor)
 
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
         self.blocks_throttle_0.set_sample_rate(self.samp_rate)
 
 
@@ -169,7 +166,6 @@ def main(top_block_cls=test_serial, options=None):
 
     tb = top_block_cls()
 
-    tb.start()
 
     tb.show()
 

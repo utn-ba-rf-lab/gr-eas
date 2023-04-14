@@ -17,7 +17,7 @@ options:
     placement: (0,0)
     qt_qss_theme: ''
     realtime_scheduling: '1'
-    run: 'True'
+    run: 'False'
     run_command: '{python} -u {filename}'
     run_options: prompt
     sizing_mode: fixed
@@ -85,9 +85,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [168, 164.0]
+    coordinate: [120, 164.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -105,6 +105,26 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [392, 204.0]
+    rotation: 0
+    state: true
+- name: blocks_vector_source_x_0
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'False'
+    tags: '[]'
+    type: float
+    vector: (1, -1, 1, -1)
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [256, 300.0]
     rotation: 0
     state: true
 - name: qtgui_number_sink_0
@@ -175,7 +195,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    board: 'False'
+    board: 'True'
     comment: ''
     device: /dev/ttyUSB1
     mode: detector
@@ -191,6 +211,7 @@ connections:
 - [analog_sig_source_x_0, '0', blocks_throttle_0, '0']
 - [blocks_throttle_0, '0', qtgui_number_sink_0, '0']
 - [blocks_throttle_0, '0', serializer_serializer_0, '0']
+- [blocks_vector_source_x_0, '0', blocks_throttle_0, '0']
 
 metadata:
   file_format: 1
