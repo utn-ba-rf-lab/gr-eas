@@ -27,11 +27,10 @@ class serializer(gr.sync_block):
         
         if(board_feature):
             board_detect=bytes("UTN",'utf-8')
-            for byte in board_detect:
-                self.tty.write(byte)
-            
-            board_data=self.tty.read()
-            print("[RX] | Board detected: %s" %board_data);
+            self.tty.write(board_detect)
+           
+            #board_data=self.tty.read()
+            #print("[RX] | Board detected: %s" %board_data);
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
