@@ -11,6 +11,8 @@ import numpy as np
 import serial
 from gnuradio import gr
 
+BOARD= {"UTNv1":"Mercurial"}
+
 class serializer(gr.sync_block):
     """
     docstring for block serializer
@@ -20,17 +22,35 @@ class serializer(gr.sync_block):
             name="serializer",
             in_sig=[np.float32],
             out_sig=None)
-        self.tty = serial.Serial(device_path)
+
+        self.tty = serial.Serial(device_path,timeout=10)
         self.mode=mode
         print("[INFO] | Path: %s" %device_path);
         print("[INFO] | Mode: %s" %self.mode);
         
         if(board_feature):
+
+            #Send keyword to detect which board is connected
             board_detect=bytes("UTN",'utf-8')
             self.tty.write(board_detect)
            
-            #board_data=self.tty.read()
-            #print("[RX] | Board detected: %s" %board_data);
+            print("[RX] | Detecting board..")
+
+            try:
+                board_data=self.tty.readline()
+                encoding = 'utf-8'
+                board_data=board_data.decode(encoding)
+                print("[DEBUG] | RX: %s" %board_data)
+
+                if(board_data == "UTNv1\n"):
+                    print("[INFO] | Board detected:", BOARD["UTNv1"])
+                else:
+                    print("[ERROR] | Not a valid board detected")
+                    exit() 
+            except:
+                print("[ERROR] | No board detected")
+                exit()
+
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
