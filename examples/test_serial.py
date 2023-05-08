@@ -76,15 +76,19 @@ class test_serial(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.valor = valor = 0
-        self.samp_rate = samp_rate = 4000
+        self.valor = valor = 0.5
+        self.samp_rate = samp_rate = 8000
+        self.Frecuencia = Frecuencia = 2
 
         ##################################################
         # Blocks
         ##################################################
-        self._valor_range = Range(-1, 1, 0.1, 0, 200)
+        self._valor_range = Range(-1, 1, 0.1, 0.5, 200)
         self._valor_win = RangeWidget(self._valor_range, self.set_valor, "Valor", "slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._valor_win)
+        self._Frecuencia_range = Range(0.5, 20, 0.5, 2, 200)
+        self._Frecuencia_win = RangeWidget(self._Frecuencia_range, self.set_Frecuencia, "Frecuencia", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.top_layout.addWidget(self._Frecuencia_win)
         self.serializer_serializer_0 = serializer.serializer('/dev/ttyUSB1',True,'detector')
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
             1024, #size
@@ -134,7 +138,7 @@ class test_serial(gr.top_block, Qt.QWidget):
 
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_time_sink_x_0_win)
-        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_SIN_WAVE, .5, valor, 0, 0)
+        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_SIN_WAVE, Frecuencia, valor, 0, 0)
 
 
         ##################################################
@@ -166,6 +170,13 @@ class test_serial(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
+
+    def get_Frecuencia(self):
+        return self.Frecuencia
+
+    def set_Frecuencia(self, Frecuencia):
+        self.Frecuencia = Frecuencia
+        self.analog_sig_source_x_0.set_frequency(self.Frecuencia)
 
 
 
