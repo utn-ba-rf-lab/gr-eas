@@ -56,8 +56,8 @@ class serializer(gr.sync_block):
         in0 = input_items[0]
         
         if(self.mode == "data"):
-
-            b = np.uint8(in0*127-128) 
+            
+            b = np.uint16(in0*32767+32768) 
             self.tty.write(b.tobytes())
         
         elif (self.mode == "detector"):
