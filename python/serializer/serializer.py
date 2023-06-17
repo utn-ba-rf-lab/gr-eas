@@ -17,7 +17,7 @@ class serializer(gr.sync_block):
     """
     docstring for block serializer
     """
-    def __init__(self,device_path,board_feature,mode):
+    def __init__(self,device_path,board_feature,mode,samp_rate):
         gr.sync_block.__init__(self,
             name="serializer",
             in_sig=[np.float32],
@@ -25,9 +25,11 @@ class serializer(gr.sync_block):
 
         self.tty = serial.Serial(device_path,timeout=10)
         self.mode=mode
+        self.samp_rate=samp_rate
         print("[INFO] | Path: %s" %device_path);
         print("[INFO] | Mode: %s" %self.mode);
-        
+        print("[INFO] | Sample rate: %d" %self.samp_rate);
+
         if(board_feature):
 
             #Send keyword to detect which board is connected
