@@ -17,7 +17,7 @@ templates:
 #  dtype: ...
 
 asserts:
-- ${ ((samp_rate<=64000) and (samp_rate>=16000)) }
+- ${ ((samp_rate==8000) or (samp_rate==16000) or (samp_rate==24000) or (samp_rate==32000) or (samp_rate==44000) or (samp_rate==48000)) }
 
 parameters:
 - id: device
@@ -35,15 +35,15 @@ parameters:
   label: Mode
   dtype: string
   default: "data"
-  options: [data, detector,receiver]
-  option_labels: ["Data","Detector","Receiver"]
+  options: [data, detector]
+  option_labels: ["Data","Detector"]
 
 -   id: samp_rate
     label: Sample Rate
     dtype: int
     default: samp_rate
-    options: ['16000', '22050', '24000', '32000', '44100', '48000']
-    option_labels: [16 kHz, 22.05 kHz, 24 kHz, 32 kHz, 44.1 kHz, 48 kHz]
+    options: ['8000','16000','24000', '32000','48000']
+    option_labels: [8 kHz, 16 kHz , 24 kHz, 32 kHz, 44 kHz, 48 kHz]
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:

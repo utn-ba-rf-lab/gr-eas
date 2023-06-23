@@ -11,7 +11,7 @@ import numpy as np
 import serial
 from gnuradio import gr
 
-BOARD= {"UTNv1":"Mercurial"}
+BOARD= {"UTNv1":"Mercurial 8kHz","UTNv2":"Mercurial X kHz"}
 
 class serializer(gr.sync_block):
     """
@@ -46,6 +46,12 @@ class serializer(gr.sync_block):
 
                 if(board_data == "UTNv1\n"):
                     print("[INFO] | Board detected:", BOARD["UTNv1"])
+                
+                elif(board_data == "UTNv2\n"):
+                    print("[INFO] | Board detected:", BOARD["UTNv2"])
+                    board_sample_rate = np.uint16(self.samp_rate)
+                    self.tty.write(board_sample_rate.tobytes())
+
                 else:
                     print("[ERROR] | Not a valid board detected")
                     exit() 
@@ -76,17 +82,17 @@ class serializer(gr.sync_block):
    
                 self.tty.write(b.tobytes())
         
-        elif (self.mode == "receiver"):
-            data_mercurial=self.tty.read()
-            print("[RX] | Data received: %s" %data_mercurial);
-            num_recv=int.from_bytes(data_mercurial, byteorder='big', signed=True) 
+       # elif (self.mode == "receiver"):
+       #     data_mercurial=self.tty.read()
+       #     print("[RX] | Data received: %s" %data_mercurial);
+       #     num_recv=int.from_bytes(data_mercurial, byteorder='big', signed=True) 
 
-            if(np.sign(num_recv) == 1):
-                b = np.uint8(ord("H"))
-                print("[TX] | Data send: %d" %b);
-            elif(np.sign(num_recv) == -1):
-                b = np.uint8(ord("L"))
-                print("[TX] | Data send: %d" %b);
+       #     if(np.sign(num_recv) == 1):
+       #         b = np.uint8(ord("H"))
+       #         print("[TX] | Data send: %d" %b);
+       #     elif(np.sign(num_recv) == -1):
+       #         b = np.uint8(ord("L"))
+       #         print("[TX] | Data send: %d" %b);
         else:
             print("Error")
 
