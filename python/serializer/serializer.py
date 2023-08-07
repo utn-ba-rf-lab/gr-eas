@@ -52,9 +52,29 @@ class serializer(gr.sync_block):
                     board_sample_rate = np.uint16(self.samp_rate)
                     self.tty.write(board_sample_rate.tobytes())
 
+                    board_sample_rate_ack = self.tty.readline()
+                    board_sample_rate_ack = board_sample_rate_ack.decode(encoding)
+                    
+
+                    if(board_sample_rate_ack == "OK\n"):
+                        
+                      print("[DEBUG] | RX: %s Hz sample rate confirmed" %board_sample_rate)
+                       
+
+                    elif(board_sample_rate_ack == "ERROR\n"):
+                        
+                      print("[ERROR] | RX: %s" %board_sample_rate_ack)
+                      exit() 
+
+                    else:
+
+                      print("[ERROR] | Not a valid sample rate")
+                      exit() 
+
                 else:
                     print("[ERROR] | Not a valid board detected")
                     exit() 
+
             except:
                 print("[ERROR] | No board detected")
                 exit()
