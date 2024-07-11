@@ -77,19 +77,19 @@ class test_serial(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.valor = valor = 0.5
-        self.samp_rate = samp_rate = 8000
-        self.Frecuencia = Frecuencia = 2
+        self.samp_rate = samp_rate = 48000
+        self.Frecuencia = Frecuencia = 1000
 
         ##################################################
         # Blocks
         ##################################################
         self._valor_range = Range(-1, 1, 0.1, 0.5, 200)
-        self._valor_win = RangeWidget(self._valor_range, self.set_valor, "Valor", "slider", float, QtCore.Qt.Horizontal)
+        self._valor_win = RangeWidget(self._valor_range, self.set_valor, "Valor", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._valor_win)
-        self._Frecuencia_range = Range(0.5, 20, 0.5, 2, 200)
+        self._Frecuencia_range = Range(100, 8000, 100, 1000, 200)
         self._Frecuencia_win = RangeWidget(self._Frecuencia_range, self.set_Frecuencia, "Frecuencia", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._Frecuencia_win)
-        self.serializer_serializer_0 = serializer.serializer('/dev/ttyUSB1',True,'detector')
+        self.serializer_serializer_0 = serializer.serializer('/dev/ttyUSB1',True,'data',samp_rate)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
             1024, #size
             samp_rate, #samp_rate

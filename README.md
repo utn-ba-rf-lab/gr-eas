@@ -18,10 +18,12 @@ Email: <m.doallo@frba.utn.edu.ar>   | Email: <leandrobottinelli@gmail.com>
     
 #### Build instructions
 
-    * mkdir build
-    * cd build
-    * cmake ..
-    * make
-    * sudo make install
-    * sudo ldconfig
+```
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+sudo ldconfig
+```
 
