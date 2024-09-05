@@ -84,14 +84,15 @@ class serializer(gr.sync_block):
         in0 = input_items[0]
         
         if(self.mode == "data"):
-            for x in range(len(in0)):
-                # Overflow case depending on number sign
-                if(np.abs(in0[x]) > 1 ):
-                    b = np.uint16(np.sign(in0[x])*32767+32768) 
-                else:            
-                    b = np.uint16(in0[x]*32767+32768) 
-            
-                self.tty.write(b.tobytes())            
+            saturated = np.abs(in0) > 1
+            output = np.zeros_like(in0, dtype=np.uint16)
+
+            # Saturated values
+            output[saturated] = np.sign(in0[saturated]) * 32767 + 32768
+            # Non-saturated values
+            output[~saturated] = (in0[~saturated] * 32767 + 32768).astype(np.uint16)
+            self.tty.write(output.tobytes())          
+           
         
         elif (self.mode == "detector"):
             #num_recv = np.uint8(in0*127-128)
