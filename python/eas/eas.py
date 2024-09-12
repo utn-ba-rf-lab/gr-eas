@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2022 gr-serializer author.
+# Copyright 2022 gr-eas author.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -13,13 +13,13 @@ from gnuradio import gr
 
 BOARD= {"UTNv1":"Mercurial 8kHz","UTNv2":"Mercurial X kHz"}
 
-class serializer(gr.sync_block):
+class eas(gr.sync_block):
     """
-    docstring for block serializer
+    docstring for block eas
     """
     def __init__(self,device_path,board_feature,mode,samp_rate):
         gr.sync_block.__init__(self,
-            name="serializer",
+            name="eas",
             in_sig=[np.float32],
             out_sig=None)
 

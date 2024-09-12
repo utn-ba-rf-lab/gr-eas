@@ -8,10 +8,10 @@
 ########################################################################
 # Check if there is C++ code at all
 ########################################################################
-if(NOT serializer_sources)
+if(NOT eas_sources)
     MESSAGE(STATUS "No C++ sources... skipping python bindings")
     return()
-endif(NOT serializer_sources)
+endif(NOT eas_sources)
 
 ########################################################################
 # Check for pygccxml
@@ -28,20 +28,20 @@ include(GrPybind)
 # Python Bindings
 ########################################################################
 
-list(APPEND serializer_python_files
+list(APPEND eas_python_files
     python_bindings.cc)
 
-GR_PYBIND_MAKE_OOT(serializer
+GR_PYBIND_MAKE_OOT(eas
    ../../..
-   gr::serializer
-   "${serializer_python_files}")
+   gr::eas
+   "${eas_python_files}")
 
 # copy in bindings .so file for use in QA test module
 add_custom_target(
   copy_bindings_for_tests ALL
   COMMAND
     ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/*.so"
-    ${CMAKE_BINARY_DIR}/test_modules/gnuradio/serializer/
-  DEPENDS serializer_python)
+    ${CMAKE_BINARY_DIR}/test_modules/gnuradio/eas/
+  DEPENDS eas_python)
 
-install(TARGETS serializer_python DESTINATION ${GR_PYTHON_DIR}/gnuradio/serializer COMPONENT pythonapi)
+install(TARGETS eas_python DESTINATION ${GR_PYTHON_DIR}/gnuradio/eas COMPONENT pythonapi)

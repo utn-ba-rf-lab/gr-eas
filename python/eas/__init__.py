@@ -7,18 +7,18 @@
 # The presence of this file turns this directory into a Python package
 
 '''
-This is the GNU Radio SERIALIZER module. Place your Python package
+This is the GNU Radio eas module. Place your Python package
 description here (python/__init__.py).
 '''
 import os
 
-# import pybind11 generated symbols into the serializer namespace
+# import pybind11 generated symbols into the eas namespace
 try:
     # this might fail if the module is python-only
-    from .serializer_python import *
+    from .eas_python import *
 except ModuleNotFoundError:
     pass
 
 # import any pure python here
-from .serializer import serializer
+from .eas import eas
 #

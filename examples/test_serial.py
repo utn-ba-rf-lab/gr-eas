@@ -32,7 +32,7 @@ import signal
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
-from gnuradio import serializer
+from gnuradio import eas
 from gnuradio.qtgui import Range, RangeWidget
 from PyQt5 import QtCore
 
@@ -89,7 +89,7 @@ class test_serial(gr.top_block, Qt.QWidget):
         self._Frecuencia_range = Range(100, 8000, 100, 1000, 200)
         self._Frecuencia_win = RangeWidget(self._Frecuencia_range, self.set_Frecuencia, "Frecuencia", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._Frecuencia_win)
-        self.serializer_serializer_0 = serializer.serializer('/dev/ttyUSB1',True,'data',samp_rate)
+        self.eas_eas_0 = eas.eas('/dev/ttyUSB1',True,'data',samp_rate)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
             1024, #size
             samp_rate, #samp_rate
@@ -145,7 +145,7 @@ class test_serial(gr.top_block, Qt.QWidget):
         # Connections
         ##################################################
         self.connect((self.analog_sig_source_x_0, 0), (self.qtgui_time_sink_x_0, 0))
-        self.connect((self.analog_sig_source_x_0, 0), (self.serializer_serializer_0, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.eas_eas_0, 0))
 
 
     def closeEvent(self, event):

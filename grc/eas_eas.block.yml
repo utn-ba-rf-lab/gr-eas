@@ -1,10 +1,10 @@
-id: serializer_serializer
-label: serializer
-category: '[serializer]'
+id: eas_eas
+label: eas
+category: '[eas]'
 
 templates:
-  imports: from gnuradio import serializer
-  make: serializer.serializer(${device},${board},${mode},${samp_rate})
+  imports: from gnuradio import eas
+  make: eas.eas(${device},${board},${mode},${samp_rate})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:

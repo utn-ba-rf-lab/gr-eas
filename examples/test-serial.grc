@@ -84,8 +84,8 @@ blocks:
     coordinate: [360, 180.0]
     rotation: 0
     state: true
-- name: serializer_serializer_0
-  id: serializer_serializer
+- name: eas_eas_0
+  id: eas_eas
   parameters:
     affinity: ''
     alias: ''
@@ -101,7 +101,7 @@ blocks:
     state: true
 
 connections:
-- [blocks_throttle_0, '0', serializer_serializer_0, '0']
+- [blocks_throttle_0, '0', eas_eas_0, '0']
 - [blocks_vector_source_x_0, '0', blocks_throttle_0, '0']
 
 metadata:

@@ -1,6 +1,6 @@
 /*!
- * \defgroup block GNU Radio SERIALIZER C++ Signal Processing Blocks
- * \brief All C++ blocks that can be used from the SERIALIZER GNU Radio
+ * \defgroup block GNU Radio eas C++ Signal Processing Blocks
+ * \brief All C++ blocks that can be used from the eas GNU Radio
  *        module are listed here or in the subcategories below.
  *
  */
