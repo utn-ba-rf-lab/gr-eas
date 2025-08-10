@@ -11,5 +11,5 @@
 ########################################################################
 install(FILES
     api.h
-    DESTINATION include/gnuradio/eas
+    DESTINATION include/gnuradio/serializer
 )

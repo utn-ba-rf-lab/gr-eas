@@ -8,15 +8,15 @@
  *
  */
 
-#ifndef INCLUDED_eas_API_H
-#define INCLUDED_eas_API_H
+#ifndef INCLUDED_serializer_API_H
+#define INCLUDED_serializer_API_H
 
 #include <gnuradio/attributes.h>
 
-#ifdef gnuradio_eas_EXPORTS
-#define eas_API __GR_ATTR_EXPORT
+#ifdef gnuradio_serializer_EXPORTS
+#define serializer_API __GR_ATTR_EXPORT
 #else
-#define eas_API __GR_ATTR_IMPORT
+#define serializer_API __GR_ATTR_IMPORT
 #endif
 
-#endif /* INCLUDED_eas_API_H */
+#endif /* INCLUDED_serializer_API_H */

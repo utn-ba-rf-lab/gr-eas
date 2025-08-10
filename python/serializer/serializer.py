@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2022 gr-eas author.
+# Copyright 2022 gr-serializer author.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -11,21 +11,35 @@ import numpy as np
 import serial
 from gnuradio import gr
 
-BOARD= {"UTNv1":"Mercurial 8kHz","UTNv2":"Mercurial X kHz"}
+BOARD= {"UTNv1":"Mercurial 8kHz","UTNv2":"Mercurial X kHz","UTNv3":"Mercurial X kHz / X Vref"}
 
-class eas(gr.sync_block):
+class serializer(gr.sync_block):
     """
-    docstring for block eas
+    docstring for block serializer
     """
-    def __init__(self,device_path,board_feature,mode,samp_rate):
-        gr.sync_block.__init__(self,
-            name="eas",
-            in_sig=[np.float32],
+    def __init__(self,device_path,input_type,board_feature,mode,samp_rate,vref):
+        if input_type == float:
+            gr.sync_block.__init__(self,
+                name="serializer",
+                in_sig=[np.float32],
+                out_sig=None)
+
+            self.input_type = 2
+        elif input_type == complex:  
+            gr.sync_block.__init__(self,
+            name="serializer",
+            in_sig=[np.complex64],
             out_sig=None)
+
+            self.input_type = 4
+        else:
+            raise ValueError(f"Unsupported input_type: {input_type}")
 
         self.tty = serial.Serial(device_path,timeout=10)
         self.mode=mode
         self.samp_rate=samp_rate
+        self.board_vref= vref
+
         print("[INFO] | Path: %s" %device_path);
         print("[INFO] | Mode: %s" %self.mode);
         print("[INFO] | Sample rate: %d" %self.samp_rate);
@@ -70,6 +84,33 @@ class eas(gr.sync_block):
 
                       print("[ERROR] | Not a valid sample rate")
                       exit() 
+                elif(board_data == "UTNv3\n"):
+                    print("[INFO] | Board detected:", BOARD["UTNv3"])
+                    board_sample_rate = np.uint16(self.samp_rate)
+                    board_data_type = np.uint8(self.input_type )
+                    board_vref=np.uint16(self.board_vref/ 4.096* 65535)
+
+                    board_setup_bytes= board_sample_rate.tobytes() + board_data_type.tobytes()+ board_vref.tobytes()
+                    print(board_setup_bytes)
+                    self.tty.write(board_setup_bytes)                                       
+                    board_setup_ack = self.tty.readline()
+                    board_setup_ack = board_setup_ack.decode(encoding)
+                    print(board_setup_ack)
+
+                    if(board_setup_ack == "OK\n"):
+                        
+                      print("[DEBUG] | RX: %s Hz sample rate and %sV ref confirmed" %(board_sample_rate, self.board_vref))
+                       
+
+                    elif(board_setup_ack == "ERROR\n"):
+                        
+                      print("[ERROR] | RX: %s" %board_setup_ack)
+                      exit() 
+
+                    else:
+
+                      print("[ERROR] | Not valid board setup")
+                      exit() 
 
                 else:
                     print("[ERROR] | Not a valid board detected")
@@ -84,13 +125,36 @@ class eas(gr.sync_block):
         in0 = input_items[0]
         
         if(self.mode == "data"):
-            saturated = np.abs(in0) > 1
-            output = np.zeros_like(in0, dtype=np.uint16)
+            # Input is float
+            if (self.input_type == 2):
 
-            # Saturated values
-            output[saturated] = np.sign(in0[saturated]) * 32767 + 32768
-            # Non-saturated values
-            output[~saturated] = (in0[~saturated] * 32767 + 32768).astype(np.uint16)
+                saturated = np.abs(in0) > 1
+                output = np.zeros_like(in0, dtype=np.uint16)
+
+                # Saturated values
+                output[saturated] = np.sign(in0[saturated]) * 32767 + 32768
+                # Non-saturated values
+                output[~saturated] = (in0[~saturated] * 32767 + 32768).astype(np.uint16)
+
+            # Input is complex
+            if (self.input_type == 4):
+                real_part = np.real(in0)
+                imag_part = np.imag(in0)
+
+
+                real_clipped = np.clip(real_part, -1.0, 1.0)
+                imag_clipped = np.clip(imag_part, -1.0, 1.0)
+
+                real_uint16 = ((real_clipped * 32767) + 32768).astype(np.uint16)
+                imag_uint16 = ((imag_clipped * 32767) + 32768).astype(np.uint16)
+
+                # Interleave real and imag as [real0, imag0, real1, imag1, ...]
+                interleaved = np.empty(real_uint16.size * 2, dtype=np.uint16)
+                interleaved[0::2] = real_uint16
+                interleaved[1::2] = imag_uint16
+
+                output = interleaved
+
             self.tty.write(output.tobytes())          
            
         
