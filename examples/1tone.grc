@@ -51,7 +51,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [552, 12.0]
+    coordinate: [592, 12.0]
     rotation: 0
     state: true
 - name: samp_rate
@@ -100,7 +100,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [424, 12.0]
+    coordinate: [456, 12.0]
     rotation: 0
     state: true
 - name: analog_sig_source_x_0
@@ -116,7 +116,8 @@ blocks:
     offset: '0'
     phase: '0'
     samp_rate: samp_rate
-    type: float
+    showports: 'False'
+    type: complex
     waveform: analog.GR_SIN_WAVE
   states:
     bus_sink: false
@@ -125,30 +126,6 @@ blocks:
     coordinate: [120, 164.0]
     rotation: 0
     state: enabled
-- name: low_pass_filter_0
-  id: low_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: ''
-    cutoff_freq: '8000'
-    decim: '1'
-    gain: '1'
-    interp: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fir_filter_fff
-    width: '1000'
-    win: window.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [328, 156.0]
-    rotation: 0
-    state: true
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -223,7 +200,7 @@ blocks:
     tr_mode: qtgui.TRIG_MODE_AUTO
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '""'
-    type: float
+    type: complex
     update_time: '0.10'
     width1: '1'
     width10: '1'
@@ -243,31 +220,33 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 292.0]
+    coordinate: [768, 300.0]
     rotation: 0
-    state: true
-- name: eas_eas_0
-  id: eas_eas
+    state: enabled
+- name: serializer_serializer_0
+  id: serializer_serializer
   parameters:
     affinity: ''
     alias: ''
     board: 'True'
     comment: ''
-    device: /dev/ttyUSB1
+    device: '"/dev/ttyUSB1"'
+    input_type: complex
     mode: data
     samp_rate: samp_rate
+    vref: '2'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 180.0]
+    coordinate: [768, 148.0]
     rotation: 0
-    state: true
+    state: enabled
 
 connections:
-- [analog_sig_source_x_0, '0', low_pass_filter_0, '0']
-- [low_pass_filter_0, '0', qtgui_time_sink_x_0, '0']
-- [low_pass_filter_0, '0', eas_eas_0, '0']
+- [analog_sig_source_x_0, '0', qtgui_time_sink_x_0, '0']
+- [analog_sig_source_x_0, '0', serializer_serializer_0, '0']
 
 metadata:
   file_format: 1
+  grc_version: 3.10.9.2
