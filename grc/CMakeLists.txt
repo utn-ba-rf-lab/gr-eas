@@ -7,5 +7,5 @@
 #
 
 install(FILES
-    serializer_serializer.block.yml DESTINATION share/gnuradio/grc/blocks
+    eas_eas.block.yml DESTINATION share/gnuradio/grc/blocks
 )

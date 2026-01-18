@@ -10,7 +10,7 @@
 # Project setup
 ########################################################################
 cmake_minimum_required(VERSION 3.8)
-project(gr-serializer CXX C)
+project(gr-eas CXX C)
 enable_testing()
 
 # Install to PyBOMBS target prefix if defined
@@ -65,8 +65,8 @@ if(NOT CMAKE_MODULES_DIR)
   set(CMAKE_MODULES_DIR lib${LIB_SUFFIX}/cmake)
 endif(NOT CMAKE_MODULES_DIR)
 
-set(GR_INCLUDE_DIR      include/gnuradio/serializer)
-set(GR_CMAKE_DIR        ${CMAKE_MODULES_DIR}/gnuradio-serializer)
+set(GR_INCLUDE_DIR      include/gnuradio/eas)
+set(GR_CMAKE_DIR        ${CMAKE_MODULES_DIR}/gnuradio-eas)
 set(GR_PKG_DATA_DIR     ${GR_DATA_DIR}/${CMAKE_PROJECT_NAME})
 set(GR_PKG_DOC_DIR      ${GR_DOC_DIR}/${CMAKE_PROJECT_NAME})
 set(GR_PKG_CONF_DIR     ${GR_CONF_DIR}/${CMAKE_PROJECT_NAME}/conf.d)
@@ -121,14 +121,14 @@ add_custom_target(uninstall
 ########################################################################
 # Add subdirectories
 ########################################################################
-add_subdirectory(include/gnuradio/serializer)
+add_subdirectory(include/gnuradio/eas)
 add_subdirectory(lib)
 add_subdirectory(apps)
 add_subdirectory(docs)
 # NOTE: manually update below to use GRC to generate C++ flowgraphs w/o python
 if(ENABLE_PYTHON)
   message(STATUS "PYTHON and GRC components are enabled")
-  add_subdirectory(python/serializer)
+  add_subdirectory(python/eas)
   add_subdirectory(grc)
 else(ENABLE_PYTHON)
   message(STATUS "PYTHON and GRC components are disabled")
@@ -138,7 +138,7 @@ endif(ENABLE_PYTHON)
 # Install cmake search helper for this library
 ########################################################################
 
-install(FILES cmake/Modules/gnuradio-serializerConfig.cmake
+install(FILES cmake/Modules/gnuradio-easConfig.cmake
     DESTINATION ${GR_CMAKE_DIR}
 )
 
