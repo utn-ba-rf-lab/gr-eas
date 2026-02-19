@@ -89,9 +89,13 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
+    board: 'False'
     comment: ''
-    device: /dev/ttyUSB1
+    device: '"/dev/ttyUSB1"'
+    input_type: float
     mode: detector
+    samp_rate: samp_rate
+    vref: '4.096'
   states:
     bus_sink: false
     bus_source: false
@@ -106,3 +110,4 @@ connections:
 
 metadata:
   file_format: 1
+  grc_version: 3.10.7.0
