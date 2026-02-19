@@ -7,7 +7,7 @@
 # The presence of this file turns this directory into a Python package
 
 '''
-This is the GNU Radio SERIALIZER module. Place your Python package
+This is the GNU Radio serializer module. Place your Python package
 description here (python/__init__.py).
 '''
 import os

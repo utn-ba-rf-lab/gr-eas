@@ -1,22 +1,22 @@
 find_package(PkgConfig)
 
-PKG_CHECK_MODULES(PC_GR_SERIALIZER gnuradio-serializer)
+PKG_CHECK_MODULES(PC_GR_serializer gnuradio-serializer)
 
 FIND_PATH(
-    GR_SERIALIZER_INCLUDE_DIRS
+    GR_serializer_INCLUDE_DIRS
     NAMES gnuradio/serializer/api.h
-    HINTS $ENV{SERIALIZER_DIR}/include
-        ${PC_SERIALIZER_INCLUDEDIR}
+    HINTS $ENV{serializer_DIR}/include
+        ${PC_serializer_INCLUDEDIR}
     PATHS ${CMAKE_INSTALL_PREFIX}/include
           /usr/local/include
           /usr/include
 )
 
 FIND_LIBRARY(
-    GR_SERIALIZER_LIBRARIES
+    GR_serializer_LIBRARIES
     NAMES gnuradio-serializer
-    HINTS $ENV{SERIALIZER_DIR}/lib
-        ${PC_SERIALIZER_LIBDIR}
+    HINTS $ENV{serializer_DIR}/lib
+        ${PC_serializer_LIBDIR}
     PATHS ${CMAKE_INSTALL_PREFIX}/lib
           ${CMAKE_INSTALL_PREFIX}/lib64
           /usr/local/lib
@@ -28,5 +28,5 @@ FIND_LIBRARY(
 include("${CMAKE_CURRENT_LIST_DIR}/gnuradio-serializerTarget.cmake")
 
 INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(GR_SERIALIZER DEFAULT_MSG GR_SERIALIZER_LIBRARIES GR_SERIALIZER_INCLUDE_DIRS)
-MARK_AS_ADVANCED(GR_SERIALIZER_LIBRARIES GR_SERIALIZER_INCLUDE_DIRS)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(GR_serializer DEFAULT_MSG GR_serializer_LIBRARIES GR_serializer_INCLUDE_DIRS)
+MARK_AS_ADVANCED(GR_serializer_LIBRARIES GR_serializer_INCLUDE_DIRS)
